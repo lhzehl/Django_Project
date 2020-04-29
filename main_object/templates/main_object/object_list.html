@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<!-- Page Content -->
+
+      <!-- Blog Entries Column -->
+      <div class="col-md-8">
+
+        <h1 class="my-4">Object
+          <small>list</small>
+        </h1>
+{% for obj in objects.object_list %}
+        <!-- Blog Post -->
+        <div class="card mb-4">
+        {% if obj.image %}
+          <img class="card-img-top" src="{{ obj.image.url }}" alt="Card image cap">
+        {% else %}
+            <p></p>
+        {% endif %}
+          <div class="card-body">
+            <h2 class="card-title">{{ obj.name }}</h2>
+            <p class="card-text">{{ obj.description|truncatewords:20 }}</p>
+                    <div> {% for tag in obj.tag_1.all %}
+
+        <a class="btn-tag" href="#">{{ tag.name }}</a>
+
+    {% endfor %}</div>
+            <a href="{{ obj.get_absolute_url }}" class="btn bn-steel">Read More &rarr;</a>
+          </div>
+          <div class="card-footer text-muted">
+            Posted on {{ obj.date_published|date:"d F, Y" }} by
+            <a class="mr-2"  href="{{ obj.author.profile.get_absolute_url }}">{{ obj.author.username }}</a>
+          </div>
+        </div>
+
+
+
+
+
+
+   <!-- Pagination -->
+
+{% endfor %}        <ul class="pagination justify-content-center mb-4">
+        {% if objects.has_previous %}
+          <li class="page-item">
+            <a class="btn bn-steel mb-4" href="?page={{ objects.previous_page_number }}">&larr; Older</a>
+          </li>
+        {% endif %}
+
+    {% for n in objects.paginator.page_range %}
+
+    {% if objects.number == n %}
+        <li class="page-item">
+            <a class="btn bc-steel mb-4" href="?page={{ n }}">{{ n }}<span class="sr-only">(current)</span> </a>
+        </li>
+
+        {% elif n > objects.number|add:-3 and n < objects.number|add:3 %}
+                <li class="page-item">
+            <a class="btn bn-steel mb-4" href="?page={{ n }}">{{ n }}</a>
+        </li>
+            {% endif %}
+{% endfor %}
+
+        {% if objects.has_next %}
+          <li class="page-item">
+            <a class="btn bn-steel mb-4" href="?page={{ objects.next_page_number }}">Newer &rarr;</a>
+          </li>
+        {% endif %}
+        </ul>
+
+      </div>
+{% endblock %}
+
+
+{#      <p>   {{ obj.about }}</p>+#}
+{#       <p>  {{ obj.descriptions }}</p>#}
+{#       <p>  {{ obj.date_create }}</p>#}
+{#       <p>  {{ obj.date_publicate }}</p>+#}
+{#       <p>  {{ obj.country }}</p>#}
+{#       <p>  {{ obj.creators }}</p>+#}

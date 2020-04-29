@@ -1,0 +1,278 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+    <!-- Page Content -->
+    <!-- Post Content Column -->
+    <div class="col-lg-8">
+
+        <!-- Title -->
+        <h1 class="mt-4">{{ mainobject.name }}</h1>
+
+        <!-- Author -->
+        <p class="lead">
+            by <a class="mr-2" href="{{ mainobject.author.profile.get_absolute_url }}"><b>{{ mainobject.author.username }}</b> </a>
+
+        </p>
+
+        <hr>
+
+        <!-- Date/Time -->
+        <p>Posted on {{ mainobject.date_published|date:"d F, Y" }}</p>
+
+        <hr>
+
+        <!-- Preview Image -->
+        {% if mainobject.image %}
+            <img class="img-fluid rounded" src="{{ mainobject.image.url }}" alt="">
+        {% else %}
+            <p></p>
+        {% endif %}
+
+        <hr>
+
+        <!-- Post Content -->
+        <p class="lead">{{ mainobject.about }}</p>
+
+        <p>{{ mainobject.description|safe }}</p>
+
+        <blockquote class="blockquote">
+            <p class="mb-0">additionalobjects</p>
+            <footer class="blockquote-footer">
+                {% if mainobject.additionalobjects_set  %}
+                    <div id="carouselExampleInterval" class="carousel slide" data-ride="carousel">
+                        <div class="carousel-inner">
+                            <div class="carousel-item active" data-interval="2222">
+                                <img class="d-block w-30" src="{{ mainobject.additionalobjects_set.first.image.url }}">
+                            </div>
+                            {#  {% for pic in mainobject.additionalobjects_set.all %}#}
+                            {% for pic in mainobject.additionalobjects_set.all|slice:"1:" %}
+                                <div class="carousel-item" data-interval="2000">
+                                    <img src="{{ pic.image.url }}" class="d-block w-30">
+                                </div>
+                            {% endfor %}
+                            {% else %}
+                            <p></p>
+
+                            {##}
+                            {#    <div class="carousel-item">#}
+                            {##}
+                            {#    </div>#}
+
+                        </div>
+                        <a class="carousel-control-prev" href="#carouselExampleInterval" role="button" data-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="sr-only">Previous</span>
+                        </a>
+                        <a class="carousel-control-next" href="#carouselExampleInterval" role="button" data-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="sr-only">Next</span>
+                        </a>
+                    </div>
+                {% endif %}
+
+                {#                <cite title="Source Title">Made in {{ mainobject.country }}</cite>#}
+                {#            </footer>#}
+                {#            <a class="btn">{{ mainobject.price_sell }}$</a>#}
+
+                <br><br><br><br><br><br><br><br><br><br>
+                <div class="add-add">
+                    {% if mainobject.author == user %}
+                        Add additional objects
+                        {#                <form action="{% url 'add_object_create' mainobject.id %}" enctype="multipart/form-data" method="post"  class="mt-4" id="formReview">#}
+                        {##}
+                        {#                    {% csrf_token %}#}
+                        {##}
+                        {#                    <fieldset class="form-group">#}
+                        {#                        <legend class="border-bottom mb-4">Additional object</legend>#}
+
+                        {##}
+                        {#                        <input type="hidden" name="parent" id="contactparent" value="">#}
+                        {##}
+                        {#                        <div class="form-group editContent"#}
+                        {#                             style="outline: none; cursor: inherit;">#}
+                        {#                            <label for="description" class="editContent"#}
+                        {#                                   style="outline: none; cursor: inherit;">description#}
+                        {#                                *</label>#}
+                        {#                            <textarea class="form-control border" rows="5" name="description"#}
+                        {#                                      id="add_description" required=""></textarea>#}
+                        {#                        </div>#}
+                        {#                        <div class="d-sm-flex">#}
+                        {##}
+                        {#                            <div class="col-sm-6 form-group ml-sm-3 editContent"#}
+                        {#                                 style="outline: none; cursor: inherit;">#}
+                        {#                                <label for="addtitle" class="editContent"#}
+                        {#                                       style="outline: none; cursor: inherit;">title#}
+                        {#                                    *</label>#}
+                        {#                                <input type="addtitle" class="form-control border" name="title"#}
+                        {#                                       id="addtitle" required="">#}
+                        {#                                <input type="file" name="image">#}
+                        {#                            </div>#}
+                        {#                        </div>#}
+                        {#                        <button type="submit"#}
+                        {#                                class="mt-3 btn bn-steel btn-block py-3"#}
+                        {#                                style="outline: none; cursor: inherit;">Отправить#}
+                        {#                        </button>#}
+                        {##}
+                        {#                    </fieldset>#}
+                        {#                    <div class="form-group">#}
+                        {#                        <button class="btn bn-steel" type="submit">Add</button>#}
+                        {#                    </div>#}
+                        {#                </form>#}
+                        {##}
+
+                        <div>
+                            <a class="btn" href="{% url 'add_objects_create' mainobject.id %}"> add addda add</a>
+                        </div>
+                    {% endif %}
+
+                </div>
+
+            </footer>
+        </blockquote>
+
+
+
+
+        <!-- Comments Form -->
+        leave review
+        {% if user.is_authenticated %}
+            <form action="{% url 'add_review' mainobject.id %}" method="post" class="mt-4" id="formReview">
+
+                {% csrf_token %}
+
+                <input type="hidden" name="parent" id="contactparent" value="">
+
+                <div class="form-group editContent"
+                     style="outline: none; cursor: inherit;">
+                    <label for="contactcomment" class="editContent"
+                           style="outline: none; cursor: inherit;">Ваш комментарий
+                        *</label>
+                    <textarea class="form-control border" rows="5" name="text"
+                              id="contactcomment" required=""></textarea>
+                </div>
+                {#            <div class="d-sm-flex">#}
+                {#                <div class="col-sm-6 form-group p-0 editContent"#}
+                {#                     style="outline: none; cursor: inherit;">#}
+                {#                    <label for="contactusername" class="editContent"#}
+                {#                           style="outline: none; cursor: inherit;">Имя#}
+                {#                        *</label>#}
+                {#                    <input type="text" class="form-control border" name="name"#}
+                {#                           id="contactusername" required="">#}
+                {#                </div>#}
+                {#                <div class="col-sm-6 form-group ml-sm-3 editContent"#}
+                {#                     style="outline: none; cursor: inherit;">#}
+                {#                    <label for="contactemail" class="editContent"#}
+                {#                           style="outline: none; cursor: inherit;">Email#}
+                {#                        *</label>#}
+                {#                    <input type="email" class="form-control border" name="email"#}
+                {#                           id="contactemail" required="">#}
+                {#                </div>#}
+                {#            </div>#}
+                <button type="submit"
+                        class="mt-3 btn bn-steel btn-block py-3"
+                        style="outline: none; cursor: inherit;">Отправить
+                </button>
+            </form>
+        {% else %}
+            <p>Comments only for authenticated users</p>
+            <a class="btn btn-info btn-small" href="{% url 'login' %}">Login</a>
+            <a class="btn btn-info btn-small" href="{% url 'register' %}">Register</a>
+
+        {% endif %}
+        {#    {% for review in mainobject.unregcomment_set.all %}#}
+        {#                <div class="media mb-4">#}
+        {#                  <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">#}
+        {#                  <div class="media-body">#}
+        {#                    <h5 class="mt-0">{{ review.name }}</h5>#}
+        {#                     {{ review.text }}#}
+        {#                  </div>#}
+        {#                </div>#}
+        {#    {% endfor %}#}
+
+
+        {#                <div class="card my-4">#}
+        {#                  <h5 class="card-header">Leave a Comment:</h5>#}
+        {#                  <div class="card-body">#}
+        {#                    <form action="#" method="post">#}
+        {#   {% url 'add_review' mainobject.id %}                     {% csrf_token %}#}
+        {#                      <div class="form-group">#}
+        {#                        <textarea class="form-control" rows="3" name="name"></textarea>#}
+        {#                      </div>#}
+        {#                      <button type="submit" class="btn btn-primary">Submit</button>#}
+        {#                    </form>#}
+        {#                  </div>#}
+        {#                </div>#}
+
+
+
+        <!-- Single Comment -->
+        {#                <div class="media mb-4">#}
+        {#                  <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">#}
+        {#                  <div class="media-body">#}
+        {#                    <h5 class="mt-0">Commenter Name</h5>#}
+        {#                    Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.#}
+        {#                  </div>#}
+        {#                </div>#}
+
+        <!-- comments -->
+        {% for review in mainobject.get_review %}
+            <div class="media mb-4">
+                <img class="d-flex mr-3 rounded-circle reg-img" src="{{ review.author.profile.image.url }}" alt="">
+                <div class="media-body">
+                    <a class="mr-2" href="{{ review.author.profile.get_absolute_url }}">{{ review.author.username }}</a>
+                    <p>{{ review.text }}</p>    {% if user.is_authenticated %}
+                    <a href="#formReview" onclick="addReview('{{ review.author.username }}', '{{ review.id }}')">review</a>
+                {% endif %}
+                    {% for rew in review.reviews_set.all %}
+                        <div class="media mt-4">
+                            <img class="d-flex mr-3 rounded-circle reg-img" src="{{ review.author.profile.image.url }}" alt="">
+                            <div class="media-body">
+                                <a class="mr-2" href="{{ rev.author.profile.get_absolute_url }}">{{ rew.author.username }}</a>
+                                <p> {{ rew.text }}</p>
+                            </div>
+                        </div>
+                    {% endfor %}
+
+                </div>
+            </div>
+        {% endfor %}
+
+
+
+
+
+
+{#        {% for review in mainobject.get_unregcomment %}#}
+{#            <div class="media mb-4">#}
+{#                <img class="d-flex mr-3 rounded-circle unreg-img" src="{% static 'images.jpg' %}" alt="">#}
+{#                <div class="media-body">#}
+{#                    <h5 class="mt-0">{{ review.name }}</h5>#}
+{#                    <p>{{ review.text }}</p>#}
+{#                    <a href="#formReview" onclick="addReview('{{ review.name }}', '{{ review.id }}')">review</a>#}
+{#                    {% for rew in review.unregcomment_set.all %}#}
+{#                        <div class="media mt-4">#}
+{#                            <img class="d-flex mr-3 rounded-circle unreg-img" src="{% static 'images.jpg' %}" alt="">#}
+{#                            <div class="media-body">#}
+{#                                <h5 class="mt-0">{{ rew.name }}</h5>#}
+{#                                <p> {{ rew.text }}</p>#}
+{#                            </div>#}
+{#                        </div>#}
+{#                    {% endfor %}#}
+{##}
+{#                </div>#}
+{#            </div>#}
+{#        {% endfor %}#}
+
+    </div>
+    <script>
+        function addReview(name, id) {
+            document.getElementById("contactparent").value = id;
+            document.getElementById("contactcomment").innerText = `${name},`
+        }
+
+
+    </script>
+
+
+{% endblock %}

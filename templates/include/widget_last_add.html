@@ -1,0 +1,15 @@
+    <!-- Side Widget -->
+    <div class="card my-4">
+        <h5 class="card-header">Last added objects:</h5>
+
+        <div class="card-body">
+        <ul>
+            {% for obj in last_add %}
+            <li>
+            <a href="{{ obj.get_absolute_url }}">{{ obj.name }}</a>
+            </li>
+            {% endfor %}
+        </ul>
+        </div>
+
+    </div>

@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+    <!-- Page Content -->
+    <!-- Post Content Column -->
+    <div class="col-lg-8">
+
+        <!-- Title -->
+        <h1 class="mt-4">{{ profile.user.username }} (<small>{{ profile.name }}</small>)</h1>
+<div class="content-section">
+        <div class="media">
+            <img class="rounded-circle account-img" src="{{ profile.image.url }}">
+            <div class="media-body">
+
+                <p class="text-secondary">{{ profile.user.email }}</p>
+                <p class="text-secondary">{{ profile.about }}</p>
+
+                <div class="card-footer text-muted">
+
+Date of Birth: {{ profile.dob|date:"d F, Y" }}
+          </div>
+                <div class="card-footer text-muted">
+                Posts: <a href="#">{{ profile.user.mainobject_set.all.count }}</a><br>
+                    Comments: <a href="#">{{ profile.user.reviews_set.all.count }}</a>
+          </div>
+            </div>
+        </div>
+</div>
+
+
+
+
+{#        <!-- comments -->#}
+{#            {% for review in mainobject.get_review %}#}
+{#            <div class="media mb-4">#}
+{#                <img class="d-flex mr-3 rounded-circle reg-img" src="{{ review.author.profile.image.url }}" alt="">#}
+{#                <div class="media-body">#}
+{#                    <h5 class="mt-0">{{ review.author.username }}</h5>#}
+{#                    <p>{{ review.text }}</p>    {% if user.is_authenticated %}#}
+{#                    <a href="#formReview" onclick="addReview('{{ review.author.username }}', '{{ review.id }}')">review</a>#}
+{#                {% endif %}#}
+{#                    {% for rew in review.reviews_set.all %}#}
+{#                        <div class="media mt-4">#}
+{#                            <img class="d-flex mr-3 rounded-circle reg-img" src="{{ review.author.profile.image.url }}" alt="">#}
+{#                            <div class="media-body">#}
+{#                                <h5 class="mt-0">{{ rew.author.username }}</h5>#}
+{#                                <p> {{ rew.text }}</p>#}
+{#                            </div>#}
+{#                        </div>#}
+{#                    {% endfor %}#}
+{##}
+{#                </div>#}
+{#            </div>#}
+{#        {% endfor %}#}
+
+
+
+
+
+
+
+    </div>
+{#    <script>#}
+{#        function addReview(name, id) {#}
+{#            document.getElementById("contactparent").value = id;#}
+{#            document.getElementById("contactcomment").innerText = `${name},`#}
+{#        }#}
+{##}
+{##}
+{#    </script>#}
+
+
+{% endblock %}
