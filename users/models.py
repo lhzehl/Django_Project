@@ -7,7 +7,7 @@ from main_object.functions import gen_slug
 
 
 class Profile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
     image = models.ImageField(default='creator/default.jpg', upload_to='profile_pics')
     name = models.CharField("Name", max_length=150)
     dob = models.DateField(null=True, blank=True)

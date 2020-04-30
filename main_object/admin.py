@@ -96,7 +96,12 @@ class ReviewsCommentAdmin(admin.ModelAdmin):
     )
 
 
-
 admin.site.register(Tag)
-admin.site.register(Rank)
+
+
+@admin.register(Rank)
+class RankAdmin(admin.ModelAdmin):
+    list_display = ('id', "main_object", 'value', 'ip')
+    list_display_links = ('id',)
+
 admin.site.register(RankValue)

@@ -48,17 +48,16 @@ class MainObject(ObjectAutoSlug, models.Model):
     name = models.CharField("Name", max_length=200)
     about = models.CharField("About", max_length=200, default='')
     description = models.TextField("Description")
-    slug = models.SlugField(max_length=200, unique=True)
+    # slug = models.SlugField(max_length=200, unique=True)
     image = models.ImageField("Main Image", blank=True, upload_to='MainObject/', default='MainObject/default.jpg')
     date_create = models.PositiveSmallIntegerField("Date Create", default=2020)
     date_published = models.DateTimeField(auto_now_add=True)
     category = models.ForeignKey(Category, blank=True, on_delete=models.SET_NULL, null=True)
     country = models.CharField("Country", max_length=50)
     tag = models.ManyToManyField(Tag, verbose_name="tag1", blank=True, related_name='tags')
-
     slug = models.SlugField(max_length=200, unique=True, blank=True)
     draft = models.BooleanField("Draft", default=False)
-    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='o_author')
     # """add likes model"""
     # likes = GenericRelation(Like)
 
@@ -108,18 +107,23 @@ class RankValue(models.Model):
     value = models.SmallIntegerField("Value", default=0)
 
     def __str__(self):
-        return self.value
+        return '{}'.format(self.value)
 
     class Meta:
-        verbose_name = "Value of Object Rank"
-        verbose_name_plural = "Values of Object Rank"
+        verbose_name = "Rank Value"
+        verbose_name_plural = "Ranks Value"
+        ordering = ["-value"]
 
 
 class Rank(models.Model):
     """Rank"""
     ip = models.CharField("IP", max_length=15)
     value = models.ForeignKey(RankValue, on_delete=models.CASCADE, verbose_name="value")
-    main_object = models.ForeignKey(MainObject, on_delete=models.CASCADE, verbose_name="main object")
+    main_object = models.ForeignKey(
+        MainObject, on_delete=models.CASCADE,
+        verbose_name="main_object",
+        related_name='ranks'
+    )
 
     def __str__(self):
         return "{} - {}".format(self.value, self.main_object)
@@ -131,12 +135,14 @@ class Rank(models.Model):
 
 class Review(models.Model):
     """Comments"""
-    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='r_author')
     text = models.TextField("Message", max_length=5000)
     parent = models.ForeignKey(
-        'self', verbose_name="Parent", on_delete=models.SET_NULL, blank=True, null=True
+        'self', verbose_name="Parent", on_delete=models.SET_NULL,
+        blank=True, null=True, related_name='children'
     )
-    main_object = models.ForeignKey(MainObject, verbose_name="main object", on_delete=models.CASCADE)
+    main_object = models.ForeignKey(MainObject, verbose_name="main object",
+                                    on_delete=models.CASCADE, related_name='reviews')
     date_published = models.DateTimeField(auto_now_add=True)
     # likes = GenericRelation(Like)
 
