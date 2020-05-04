@@ -150,7 +150,7 @@ class CreateRankSerializer(serializers.ModelSerializer):
         fields = ("value", "main_object")
 
     def create(self, validated_data):
-        rank = Rank.objects.update_or_create(
+        rank, _ = Rank.objects.update_or_create(
             ip=validated_data.get("ip", None),
             main_object=validated_data.get("main_object", None),
             defaults={"value": validated_data.get("value")}
