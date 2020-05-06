@@ -129,6 +129,19 @@ class ReviewCreateSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 
+class MainObjectCreateSerializer(serializers.ModelSerializer):
+    """
+    create objects
+    """
+    class Meta:
+        model = MainObject
+        fields = [
+            'name', 'about', 'description',
+            'image', 'category', 'country',
+            'tag', 'draft'
+        ]
+
+
 class MainObjectDetailSerializer(serializers.ModelSerializer):
     """
     object detail
@@ -141,6 +154,17 @@ class MainObjectDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = MainObject
         exclude = ("draft",)
+
+
+class MainObjectUpdateSerializer(serializers.ModelSerializer):
+    """update object"""
+    class Meta:
+        model = MainObject
+        fields = [
+            'name', 'about', 'description',
+            'image', 'date_create', 'country',
+            'category', 'tag', 'draft'
+        ]
 
 
 class CreateRankSerializer(serializers.ModelSerializer):
